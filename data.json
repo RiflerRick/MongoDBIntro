@@ -1,0 +1,24 @@
+[{
+    "name":"rajdeep mukherjee",
+    "gender":"female",
+    "details":[{
+        "algorithms":8,
+        "computer architecture":8
+    },
+    {
+        "databases":8,
+        "dlc":10
+    }]
+},
+{
+    "name":"saumya gupta",
+    "gender":"female",
+    "details":[{
+        "algorithms":8,
+        "computer architecture":8
+    },{
+       "databases":8,
+        "dlc":10 
+    }]
+}
+]
