@@ -122,6 +122,40 @@ That last part is basically the projection.
     ```
     db.bank_data.find({accounts:{ $elemMatch : {'amount':{$gt:4000}, 'name':'savings'}}})
     ```
-    So be mindful of what is happening here, we are going into accounts, and matching the following elements as it appears in the object of described by value of **elemMatch**. For more [click here](https://youtu.be/W-WihPoEbR4?t=6697).
+    $gt simply is an operator alias and we need to see only those accounts having an amount greater than 4000. 
+    So be mindful of what is happening here, we are going into accounts, and matching the following elements as it appears in the object of described by value of **elemMatch**. For more [click here](https://youtu.be/W-WihPoEbR4?t=6697). Mind you that we can use sort again here in order to sort the result that we get.
 
+- When it comes to operators certain operators take only a field and certain operators take an object. This is an important factor because if we can find certain operators like $elemMatch, they take whole objects as fields whereas the $gt or $lt operator takes fields as values.
 
+- similarly we can use an operator $ne means not equal to in the following way:
+
+    ```
+    db.bank_data.find({accounts:{ $elemMatch : {'amount':{$gt:4000}, 'name':{$ne:'savings'}}}})
+    ```
+    All this will get much cleaner when we use a programming language to actually integrate with mongo and do all this instead of doing it in the command line. This is all **case sensitive**.
+
+- MongoDB gives you the flexibility to actually add data in other ways which would simply mean that you can add documents all of which does not necessarily have the same kind of attributes. Considering the previous document example, say that we have another document of the following form:
+
+    ```
+    {
+        "name":"rajdeep",
+        "accounts":[{
+            "acc":1414,
+            "name":"savings",
+            "amount":4544
+        },
+        {
+            "acc":1478,
+            "name":"investment",
+            "amount":7457
+        },
+        {
+            "acc":4756
+            "name":"current",
+            "amount":7875
+        }]
+    }
+    ``` 
+    Notice that there is no age field. If we wanna get such documents then there is an operator called $exists that works in the following way:
+
+    ``` db.bank_data.find({last_name: {$exists: true}}) ```: this returns only those documents where the last_name field exists.
