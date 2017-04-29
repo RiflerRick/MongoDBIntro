@@ -79,4 +79,49 @@ Essentially all read queries are just find().
 
 - ``` db.bank_data.find({'first_name':'James', 'last_name':'smith'})```:When we are separating the key value pairs in a query object using a comma it is taken that we want an **and** operation between the 2 key value pairs. This is important.
 
-- 
+- **or** logical operator: The or operator can be used in the following manner:
+``` db.bank_data.find({ $or : [{'last_name':'SMITH'},{'last_name':'MARTINEZ'}]}) ``` Here is or as a key just tells mongo that we want the documents where the last name is either SMITH or the last name is MARTINEZ.
+
+- We can combine this command with a projection as well. That would mean that we use the command in the following way. ``` db.bank_data.find({$or: [{'last_name':'SMITH'}, {'last_name':'MARTINEZ'}]}, {first_name:1, last_name:1}) ```
+That last part is basically the projection.
+
+- Lets say we wanna **sort** :
+
+    ``` db.bank_data.find({$or: [{'last_name':'SMITH'}, {'last_name':'MARTINEZ'}]}, {first_name:1, last_name:1}).sort({'first_name':1}) ```. This means that the results of the query will be sorted based on the field 'first_name'.
+
+    Now lets say we wanna sort by both the first_name and the last_name. In that case 
+    ``` db.bank_data.find({$or: [{'last_name':'SMITH'}, {'last_name':'MARTINEZ'}]}, {first_name:1, last_name:1}).sort({'first_name':1, last_name:1}) ```
+    Notice that second key-value pair in the arguement of the sort function.
+
+    So if we wanna sort in the other direction, we can simpy put the first and last names simply as -1.
+
+- There is a very important operator called the **elemMatch** operator that can be used pretty easily. Imagine we have documents of the following format:
+
+    ```
+    {
+        "name":"rajdeep",
+        "age":21,
+        "accounts":[{
+            "acc":1414,
+            "name":"savings",
+            "amount":4544
+        },
+        {
+            "acc":1478,
+            "name":"investment",
+            "amount":7457
+        },
+        {
+            "acc":4756
+            "name":"current",
+            "amount":7875
+        }]
+    }
+    ```
+    In such a case scenario lets try to find out the person who has in their savings account an amount greater than 4000. We can do that in the following way:
+    ```
+    db.bank_data.find({accounts:{ $elemMatch : {'amount':{$gt:4000}, 'name':'savings'}}})
+    ```
+    So be mindful of what is happening here, we are going into accounts, and matching the following elements as it appears in the object of described by value of **elemMatch**. For more [click here](https://youtu.be/W-WihPoEbR4?t=6697).
+
+
